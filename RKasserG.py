@@ -4,7 +4,7 @@ import sys
 import re
 
 def check_carls(lines):
-    soda = ["Coca-Cola", "Fanta", "Schweppes", "Craft"]
+    mixer = ["Coca-Cola", "Fanta", "Schweppes", "Craft"]
     cider = fustage = flaske = vand = energi = pant = 0.0 
 
     def from_danish(number_str):
@@ -22,7 +22,7 @@ def check_carls(lines):
                 print(fustage)
             elif any(p == "flaske," for p in parts):
                 flaske += from_danish(parts[len(parts)-2])
-        if any(p in soda for p in parts):
+        if any(p in mixer for p in parts):
             vand += from_danish(parts[len(parts)-2])
         if any(p == "Monster" for p in parts):
             energi += from_danish(parts[len(parts)-2])
@@ -34,6 +34,18 @@ def check_carls(lines):
     bilag = [['Cider', cider*1.25], ['Øl', flaske*1.25], ['fustage', fustage*1.25],['Vand', vand*1.25],
              ['Energi', energi*1.25], ['Pant', pant*1.25], ['Total', total * 1.25]]
     return bilag
+
+def check_drinx(lines):
+    mixer = ["Maté", "Sprite", "Schweppes"]
+    booze = ["Stoli", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba"]
+    cider = fustage = spiritus = vand = energi = pant = 0.0 
+
+    for l in lines:
+        parts = l.split()
+        if any(p in booze for p in parts):
+            spiritus += from_danish(parts[len(parts)-2])
+        if any(p in mixer for p in parts):
+            vand += from_danish(parts[len(parts)-2])
 
 def pdf_to_csv(pdfFile, output, arg):
     #flaske, fustage, cider, spiritus, pant, energi = 0.0
