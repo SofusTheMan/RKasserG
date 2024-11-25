@@ -3,13 +3,15 @@ import pandas as pd
 import sys
 import re
 
+
+def from_danish(number_str):
+    """Convert a Danish number format string to a float."""
+    return float(number_str.replace('.', '').replace(',', '.'))
+
 def check_carls(lines):
     mixer = ["Coca-Cola", "Fanta", "Schweppes", "Craft"]
     cider = fustage = flaske = vand = energi = pant = 0.0 
 
-    def from_danish(number_str):
-        """Convert a Danish number format string to a float."""
-        return float(number_str.replace('.', '').replace(',', '.'))
 
     for l in lines:
         parts = l.split()
@@ -36,16 +38,29 @@ def check_carls(lines):
     return bilag
 
 def check_drinx(lines):
+    other = ["Pant", "Palle"]
     mixer = ["Maté", "Sprite", "Schweppes"]
-    booze = ["Stoli", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba"]
-    cider = fustage = spiritus = vand = energi = pant = 0.0 
+    booze = ["Stoli", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba", "Jägermeister", "Gin", "Fernet-Branca"]
+    tilbehør = spiritus = vand = energi = pant = 0.0 
 
     for l in lines:
         parts = l.split()
         if any(p in booze for p in parts):
-            spiritus += from_danish(parts[len(parts)-2])
+            spiritus += from_danish(parts[len(parts)-1])
         if any(p in mixer for p in parts):
-            vand += from_danish(parts[len(parts)-2])
+            vand += from_danish(parts[len(parts)-1])
+        if any(p in other for p in parts):
+            pant += from_danish(parts[len(parts)-1])
+        if "Red" in parts and "Bull" in parts:
+            energi += from_danish(parts[len(parts)-1])
+        if any(p == "Istønde" for p in parts):
+            tilbehør += from_danish(parts[len(parts)-1])
+
+    total = tilbehør + spiritus + vand + energi + pant
+    bilag = [['Tilbehør', tilbehør*1.25],['Spiritus', spiritus*1.25], ['Vand', vand*1.25],
+             ['Energi', energi*1.25], ['Pant', pant*1.25]]
+    return bilag
+
 
 def pdf_to_csv(pdfFile, output, arg):
     #flaske, fustage, cider, spiritus, pant, energi = 0.0
@@ -69,5 +84,11 @@ def pdf_to_csv(pdfFile, output, arg):
     frame = pd.DataFrame(data)
     frame.to_csv(output, index=False, header=False) 
 
+place = argv[1]
+file = argv[2]
+output = file.replace(".pdf", ".csv")
 
-pdf_to_csv("carls.pdf", "carls.csv", "c")
+if len(argv) < 3 or len(argv) > 3:
+    print("Usage: python3 RKasserG.py [bilag type] [file path]")
+else:
+    pdf_to_csv(file, output, place)
