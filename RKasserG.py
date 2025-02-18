@@ -1,8 +1,6 @@
 import pdfplumber
 import pandas as pd
 import sys
-import re
-
 
 def from_danish(number_str):
     """Convert a Danish number format string to a float."""
@@ -39,8 +37,9 @@ def check_carls(lines):
 
 def check_drinx(lines):
     other = ["Pant", "Palle"]
-    mixer = ["Maté", "Sprite", "Schweppes"]
-    booze = ["Vodka", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba", "Jägermeister#", "Gin", "Fernet-Branca"]
+    til = ["Istønde,", "Strips", "Pantsække,"]
+    mixer = ["Maté", "Sprite", "Schweppes", "Faxe", "Coca"]
+    booze = ["Vodka", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba", "Jägermeister#", "Gin", "Fernet-Branca", "Pisang", "Minttu"]
     fustage = cider = tilbehør = spiritus = vand = energi = pant = 0.0 
 
     for l in lines:
@@ -53,7 +52,7 @@ def check_drinx(lines):
             pant += from_danish(parts[len(parts)-1])
         if "Red" in parts and "Bull" in parts:
             energi += from_danish(parts[len(parts)-1])
-        if any(p == "Istønde," for p in parts):
+        if any(p in til for p in parts):
             tilbehør += from_danish(parts[len(parts)-1])
         if "Fustage" in parts and "Pant" not in parts:
             fustage += from_danish(parts[len(parts)-1])
