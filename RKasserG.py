@@ -94,6 +94,38 @@ def check_drinx(lines):
              ['Energi', energi*1.25], ['Pant', pant*1.25],['Cider', cider*1.25],
              ['Fadøl', fustage*1.25], ['Miljøafgift', miljøtillæg*1.25], ['Total', total*1.25]]
     return bilag
+def check_carls_tilskud(lines):
+    # keywords per category (lowercased checks)
+    categories = {
+        'ØL': ['fl', 'ds', 'fl.'],
+        'Cider': ['cider/fabs'],
+        'Fadøl': ['fad'],
+    }
+
+    totals = {name: 0.0 for name in categories}
+    for l in lines:
+        parts = l.split()
+        low_parts = [p.lower() for p in parts]
+        match_found = False
+        # value is expected as the last token (e.g. "-7,92")
+        value_token = parts[-1] if parts else "0,00"
+        for name, kws in categories.items():
+            if any(any(kw in token for token in low_parts) for kw in kws):
+                if match_found:
+                    print("Found overlapping categories in line:", l)
+                match_found = True
+                try:
+                    totals[name] += from_danish(value_token)
+                except Exception:
+                    # ignore parse errors for now
+                    pass
+        if match_found:
+            print("Found line:", l)
+
+    total = sum(totals.values())
+    bilag = [[name, amt * 1.25] for name, amt in totals.items()]
+    bilag.append(['Total', total * 1.25])
+    return bilag
 
 
 def pdf_to_csv(pdfFile, output, arg):
@@ -109,6 +141,9 @@ def pdf_to_csv(pdfFile, output, arg):
                     data += [dat for dat in out]
                 case "d":
                     out = check_drinx(lines)
+                    data += [dat for dat in out]
+                case "cl":
+                    out = check_carls_tilskud(lines)
                     data += [dat for dat in out]
                 case _:
                     print("Type not supported.")
