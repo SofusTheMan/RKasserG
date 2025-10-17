@@ -39,8 +39,8 @@ def check_drinx(lines):
     other = ["Pant", "Palle"]
     til = ["Istønde,", "Strips", "Pantsække,", "Appelsiner,", "Istang,", "Lime,", "Mynte,", "Rørsukker,", "Sugerør,", "Monin", "Ponte", "t/fadølsanlæg"]
     mixer = ["Maté", "Sprite", "Schweppes", "Faxe", "Coca", "Pellegrino"]
-    booze = ["Vodka", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba", "Jägermeister#", "Gin", "Fernet-Branca", "Pisang", "Minttu", "Aperol", "Barmix", "Prosecco"]
-    energidrikke = ["Red"]
+    booze = ["Vodka", "Baileys", "Gammel", "Bacardi", "Fugle", "Cuba", "Jägermeister#", "Gin", "Fernet-Branca", "Pisang", "Minttu", "Aperol", "Barmix", "Prosecco", "Tequila", "Passoa", "Råstoff", "Sambuca"]
+    energidrikke = ["Red", "Monster"]
     fustage = cider = tilbehør = spiritus = vand = energi = pant = miljøtillæg = 0.0
     match_found = False
     for l in lines:
@@ -92,7 +92,7 @@ def check_drinx(lines):
     total = tilbehør + spiritus + vand + energi + pant + fustage + cider + miljøtillæg
     bilag = [['Tilbehør', tilbehør*1.25],['Spiritus', spiritus*1.25], ['Vand', vand*1.25],
              ['Energi', energi*1.25], ['Pant', pant*1.25],['Cider', cider*1.25],
-             ['Fadøl', fustage*1.25], ['Miljøtillæg/Varekøb', miljøtillæg*1.25], ['Total', total*1.25]]
+             ['Fadøl', fustage*1.25], ['Miljøafgift', miljøtillæg*1.25], ['Total', total*1.25]]
     return bilag
 
 
