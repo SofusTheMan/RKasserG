@@ -240,41 +240,68 @@ def check_carls_tilskud(lines):
     bilag.append(['Total inkl. moms', round(total_moms, 2)])
     return bilag
 def nemlig_bilag(lines):
-    # keywords per category
-    categories = {
-        'Øl': ['Grøn'],
-        'Fadøl': ['fustage'],
-        'Cider': ['Somersby', 'Breezer'],
-        'Spiritus': ['Baileys'],
-        'Vand': ['Coca-Cola', 'Squash', 'kakaomælk'],
+    # Definition af regler: Jo mere specifik reglen er, jo tidligere skal den stå.
+    # Vi bruger tupler af ord, som ALLE skal findes i linjen for et match.
+    rules = {
+        'Øl': [
+            ('Grøn',)
+        ],
+        'Fadøl': [
+            ('fustage',)
+        ],
+        'Cider': [
+            ('Somersby',), ('Breezer',)
+        ],
+        'Spiritus': [
+            ('Baileys',)
+        ],
+        'Vand': [
+            ('Coca-Cola',), ('Squash',), ('kakaomælk',)
+        ],
         'Mad': [],
-        'Pant': ['Pant'],
-        'Fragt': ['Fragt', 'Pakkegebyr'],
+        'Pant': [
+            ('Pant',)
+        ],
+        'Fragt': [
+            ('Fragt',), ('Pakkegebyr',)
+        ],
     }
 
-    totals = {name: 0.0 for name in categories}
-    for l in lines:
-        parts = l.split()
-        match_found = ""
-        # value is expected as the last token
-        value_token = parts[-1] if parts else "0,00"
-        for name, kws in categories.items():
-            if any(any(kw in token for token in parts) for kw in kws):
-                if match_found != "":
-                    print("Found overlapping categories in line:", l)
-                    print("Categories:", match_found, "and", name)
-                match_found += name + " "
-                try:
-                    totals[name] += from_danish(value_token)
-                except Exception:
-                    # ignore parse errors for now
-                    pass
-        if match_found:
-            print("Found line:", l)
+    totals = {name: 0.0 for name in rules.keys()}
 
-    total = sum(totals.values())
-    bilag = [[name, amt] for name, amt in totals.items()]
-    bilag.append(['Total', total])
+    for line in lines:
+        clean_line = line.strip()
+        if not clean_line:
+            continue
+
+        parts = clean_line.split()
+        if len(parts) < 1:
+            continue
+
+        try:
+            amount = from_danish(parts[-1])
+        except (ValueError, IndexError):
+            continue
+
+        matched_category = None
+
+        for category, sequences in rules.items():
+            for seq in sequences:
+                if all(word in clean_line for word in seq):
+                    matched_category = category
+                    break
+            if matched_category:
+                break
+
+        if matched_category:
+            totals[matched_category] += amount
+            print(f"Match: [{matched_category}] -> {clean_line} ({amount})")
+        else:
+            print(f"Intet match fundet for: {clean_line}")
+
+    bilag = [[cat, round(amt * 1.25, 2)] for cat, amt in totals.items()]
+    total_moms = sum(item[1] for item in bilag)
+    bilag.append(['Total inkl. moms', round(total_moms, 2)])
     return bilag
 
 def pdf_to_csv(pdfFile, output, arg):
