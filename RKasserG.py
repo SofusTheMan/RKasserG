@@ -63,6 +63,9 @@ def check_carls(lines):
             ('Aftalerabat', 'LTR'),
             ('Cazadores', 'Blanco'),
         ],
+        'Ekspeditionsgebyr' : [
+            ('Ekspeditionsgebyr'),
+        ],
     }
 
     totals = {name: 0.0 for name in rules.keys()}
