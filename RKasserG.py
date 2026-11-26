@@ -33,10 +33,18 @@ def check_carls(lines):
             ('Fanta', 'Orange')
         ],
         'Øl': [
-            ('Tuborg', 'Classic'), ('Pilsner',), ('Tuborg', 'Guld'), ('Grøn', 'Tuborg',),
+            ('Tuborg', 'Classic'), 
+            ('Pilsner',), 
+            ('Tuborg', 'Guld'), 
+            ('Grøn', 'Tuborg',),
+            ('Tuborg', 'Påskebryg',),
         ],
         'Cider' : [
-            ('Somersby', 'Mango')
+            ('Somersby', 'Mango'),
+            ('Somersby', 'Blackberry'),
+            ('Somersby', 'Elderflower'),
+            ('Somersby', 'Apple'),
+            ('Somersby', 'Red', 'Orange'),
         ],
         'Pant' : [
             ('Flaskepant',),
@@ -48,7 +56,12 @@ def check_carls(lines):
             ('Tuborg', '33', 'cl', 'ks'),
             ('25', 'l', 'fustage', 'tom'),
             ('25', 'cl', 'tom', 'ks')
-
+        ],
+        'Spiritus' : [
+            ('Eristoff', 'Original'),
+            ('Aftalerabat', 'LTR'),
+            ('Aftalerabat', 'LTR'),
+            ('Cazadores', 'Blanco'),
         ],
     }
 
@@ -97,7 +110,10 @@ def check_drinx(lines):
         'Pant': [
             ('Palle',),
             ('Pant', 'A'),
-            ('Pant', 'Tønde')
+            ('Pant', 'C', 'm/8'),
+            ('Pant', 'Draughtmaster', 'Fustage'),
+            ('Pant', 'Tønde'),
+            ('Pant', 'Tom', 'Kasse')
         ],
         'Miljøafgift': [
             ('Miljøtillæg',)
@@ -107,13 +123,25 @@ def check_drinx(lines):
             ('Fustage',)
         ],
         'Tilbehør': [
-            ('Istønde',), ('Strips',), ('Pantsække',), ('Appelsiner',), 
-            ('Istang',), ('Lime',), ('Mynte',), ('Rørsukker',), 
-            ('Sugerør',), ('Monin',), ('Ponte',), ('t/fadølsanlæg',),
-            ('Barmix', 'Syrup'), ('Batteri', 'AA')
+            ('Istønde',), 
+            ('Strips',), 
+            ('Pantsække',), 
+            ('Appelsiner',), 
+            ('Istang',), 
+            ('Lime',), 
+            ('Mynte',), 
+            ('Rørsukker',), 
+            ('Sugerør',), 
+            ('Monin',), 
+            ('Ponte',), 
+            ('t/fadølsanlæg',),
+            ('Barmix', 'Syrup'), 
+            ('Bordsalt,', 'Fint'), 
+            ('Affaldsæk,'), 
+            ('Batteri', 'AA')
         ],
         'Vand': [
-            ('Maté',), ('Sprite',), ('Schweppes',), ('Faxe', 'Kondi,', 'Dåse', '(24x33cl', '+pant)#'), 
+            ('Sprite',), ('Schweppes',), ('Faxe', 'Kondi,', 'Dåse', '(24x33cl', '+pant)#'), 
             ('Coca',), ('Pellegrino',), ('Ginger', 'Beer'),
             ('Rynkeby', 'Appelsinjuice')
         ],
@@ -124,13 +152,15 @@ def check_drinx(lines):
             ('Tequila',), ('Passoa',), ('Råstoff',), ('Sambuca',), ('Havana',)
         ],
         'Energi': [
-            ('Red', 'Bull'), ('Monster',)
+            ('Maté',), ('Red', 'Bull'), ('Monster',)
         ],
         'Cider': [
             ('Smirnoff', 'Ice',), ('Somersby',)
         ],
         'Øl': [
-            ('Ceres',), ('Classic',)
+            ('Ceres',), 
+            ('Tuborg', 'Påskebryg',),
+            ('Classic',)
         ]
     }
 
@@ -244,26 +274,111 @@ def nemlig_bilag(lines):
     # Vi bruger tupler af ord, som ALLE skal findes i linjen for et match.
     rules = {
         'Øl': [
-            ('Grøn',)
+            ('Grøn', 'Tuborg'), 
+            ('Tuborg', 'Classic'),
         ],
         'Fadøl': [
             ('fustage',)
         ],
         'Cider': [
-            ('Somersby',), ('Breezer',)
+            ('Somersby',), 
+            ('SHAKER', 'Sport'), 
+            ('Breezer',)
         ],
         'Spiritus': [
-            ('Baileys',)
+            ('Baileys',), 
+            ('Absolut', 'vodka',), 
+            ('Små', 'Sure',), 
+            ('Casa', 'Nogal'), 
         ],
         'Vand': [
-            ('Coca-Cola',), ('Squash',), ('kakaomælk',)
+            ('Coca-Cola',), 
+            ('Squash',), 
+            ('kakaomælk',), 
+            ('Faxe', 'Kondi')
         ],
-        'Mad': [],
+        'Mad': [
+            ('Minimælk',),
+            ('Kartoffelspegepølse',),
+            ('Leverpostej',),
+            ('Skrabeæg',),
+            ('Smør',),
+            ('yoghurt',),
+            ('Hamburgerryg',),
+            ('Rullepølse',),
+            ('Veggie sandwichskiver',),
+            ('Bacon',),
+            ('Creme fraiche',),
+            ('Hummus',),
+            ('Smørbar',),
+            ('Piskefløde',),
+            ('Veggie spegepølse',),
+            ('Cocktailpølser',),
+            ('Falafel',),
+            ('Ost i skiver',),
+            ('Mozzarella',),
+            ('Kyllingebrystfilet',),
+            ('Peberfrugt',),
+            ('Banan',),
+            ('Æble',),
+            ('Agurk',),
+            ('Tomat',),
+            ('Iceberg salat',),
+            ('Løg',),
+            ('Champignon',),
+            ('Hvidløg',),
+            ('Wokblanding',),
+            ('Håndværkere',),
+            ('Ærter',),
+            ('Rundstykker',),
+            ('Pålægschokolade',),
+            ('Mayonnaise',),
+            ('Remoulade',),
+            ('Havregryn',),
+            ('Solsikkerugbrød',),
+            ('Chunky salsa dip',),
+            ('Hindbærmarmelade',),
+            ('Solbærmarmelade',),
+            ('Basilikum',),
+            ('Majs',),
+            ('Grøn karrypasta',),
+            ('Parboiled ris',),
+            ('Grøntsagsbouillon',),
+            ('Tortilla wraps',),
+            ('Kikærter',),
+            ('Jalapenos',),
+            ('Ristede løg',),
+            ('Solsikkeolie',),
+            ('Baked beans',),
+            ('Løgpulver',),
+            ('Kokosmælk',),
+            ('BBQ sauce',),
+            ('Kaffe',),
+            ('Appelsin nektar',),
+            ('Æble nektar',),
+            ('Panodil',),
+            ('Håndsæbe',),
+            ('Tandbørste',),
+            ('Altmuligklude',),
+            ('Rengøringssvampe',),
+            ('Køkkenrulle',),
+            ('Toiletpapir',),
+            ('Fryseposer',),
+            ('Opvaskemiddel',),
+            ('Bagepapir',),
+            ('Gummihandsker',),
+            ('Opvaskebørste',),
+            ('Affaldssække',),
+            ('Viskestykker',),
+        ],
         'Pant': [
             ('Pant',)
         ],
         'Fragt': [
             ('Fragt',), ('Pakkegebyr',)
+        ],
+        'Kortgebyr': [
+            ('Kortgebyr',),
         ],
     }
 
@@ -299,37 +414,43 @@ def nemlig_bilag(lines):
         else:
             print(f"Intet match fundet for: {clean_line}")
 
-    bilag = [[cat, round(amt * 1.25, 2)] for cat, amt in totals.items()]
+    bilag = [[cat, round(amt, 2)] for cat, amt in totals.items()]
     total_moms = sum(item[1] for item in bilag)
     bilag.append(['Total inkl. moms', round(total_moms, 2)])
     return bilag
 
 def pdf_to_csv(pdfFile, output, arg):
-    #flaske, fustage, cider, spiritus, pant, energi = 0.0
+    data = [['Kategori', 'Belød']]
+
+    # Saml alle linjer fra ALLE sider først
+    all_lines = []
+
     with pdfplumber.open(pdfFile) as pdf:
-        data = [['Kategori', 'Belød']] 
         for p in pdf.pages:
             text = p.extract_text()
-            lines = text.split("\n")
-            match arg:
-                case "c":
-                    out = check_carls(lines)
-                    data += [dat for dat in out]
-                case "d":
-                    out = check_drinx(lines)
-                    data += [dat for dat in out]
-                case "cl":
-                    out = check_carls_tilskud(lines)
-                    data += [dat for dat in out]
-                case "nem":
-                    out = nemlig_bilag(lines)
-                    data += [dat for dat in out]
-                case _:
-                    print("Type not supported.")
-                    return
+            if text:
+                lines = text.split("\n")
+                all_lines.extend(lines)
+
+    # Kør kun kategoriseringen én gang på hele PDF'en
+    print(arg)
+    match arg:
+        case "c":
+            out = check_carls(all_lines)
+        case "d":
+            out = check_drinx(all_lines)
+        case "cl":
+            out = check_carls_tilskud(all_lines)
+        case "nem":
+            out = nemlig_bilag(all_lines)
+        case _:
+            print("Type not supported.")
+            return
+
+    data += out
 
     frame = pd.DataFrame(data)
-    frame.to_csv(output, index=False, header=False) 
+    frame.to_csv(output, index=False, header=False)
 
 
 if len(sys.argv) < 3 or len(sys.argv) > 3:
